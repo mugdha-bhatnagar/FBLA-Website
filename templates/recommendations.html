@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Recommendation Requests{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Recommendation Letters</h1>
+    
+    <!-- Request Form -->
+    <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: #b22222;">
+            <h4>New Request</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" class="form-control" name="student_name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Your Email</label>
+                        <input type="email" class="form-control" name="student_email" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher's Name</label>
+                        <input type="text" class="form-control" name="teacher_name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Teacher's Email</label>
+                        <input type="email" class="form-control" name="teacher_email" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Deadline</label>
+                        <input type="date" class="form-control" name="deadline" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Purpose</label>
+                        <select class="form-select" name="purpose" required>
+                            <option value="College Application">Full Time Job</option>
+                            <option value="Scholarship">Part-Time Job</option>
+                            <option value="Internship">Internship</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Existing Requests -->
+    <h3>Your Requests</h3>
+    {% if requests %}
+        <div class="list-group">
+            {% for req in requests %}
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ req.purpose }}</h5>
+                        <p>Teacher: {{ req.teacher_name }} &lt;{{ req.teacher_email }}&gt;</p>
+                        <p>Deadline: {{ req.deadline }}</p>
+                    </div>
+                    <span class="badge bg-{{ 'success' if req.status == 'completed' else 'warning' }}">
+                        {{ req.status }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning">No requests yet</div>
+    {% endif %}
+</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+</html>
+{% endblock %}

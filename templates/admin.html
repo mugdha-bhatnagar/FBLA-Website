@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard - Job Approvals</h1>
+    
+    {% if jobs %}
+        {% for job in jobs %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>{{ job['title'] }}</h3>
+                <h5 class="text-muted">{{ job['company'] }} - {{ job['location'] }}</h5>
+                <p><strong>Type:</strong> {{ job['job_type'] }} | <strong>Category:</strong> {{ job['category'] }}</p>
+                <p><strong>Salary:</strong> {{ job['salary'] }}</p>
+                <p><strong>Deadline:</strong> {{ job['deadline'] }}</p>
+                <p>{{ job['description'] }}</p>
+                
+                <div class="d-flex justify-content-end">
+                    <form method="POST" action="{{ url_for('reject_job', job_id=job['id']) }}" class="me-2">
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('approve_job', job_id=job['id']) }}">
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning">
+            No jobs pending approval.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

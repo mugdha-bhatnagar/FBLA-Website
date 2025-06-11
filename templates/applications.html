@@ -1,0 +1,68 @@
+{% include 'navbar.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>My Applications</title>
+    <style>
+      body { font-family: Arial, sans-serif; }
+      table { width: 80%; margin: 20px auto; border-collapse: collapse; }
+      th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+      th { background-color: #f4f4f4; }
+    </style>
+  </head>
+  <body>
+    <h2 style="text-align:center;">Jobs I've Applied For</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Company</th>
+          <th>Location</th>
+          <th>Date Applied</th>
+        </tr>
+      </thead>
+      <tbody id="applicationsTable">
+        <!-- Rows will be inserted here dynamically -->
+      </tbody>
+    </table>
+  
+    <script>
+      // Mock job data
+      const jobs = [
+        { id: 1, title: "Software Developer", company: "Tech Corp", location: "New York" },
+        { id: 2, title: "Data Analyst", company: "DataWorks", location: "San Francisco" },
+        { id: 3, title: "UX Designer", company: "Designify", location: "Chicago" }
+      ];
+  
+      // Mock applications table (could come from a server)
+      const applications = [
+        { jobId: 1, studentId: 101, dateApplied: "2025-04-10" },
+        { jobId: 3, studentId: 101, dateApplied: "2025-04-20" }
+      ];
+  
+      // Assume studentId is known (e.g., from login)
+      const currentStudentId = 101;
+  
+      const appliedJobs = applications
+        .filter(app => app.studentId === currentStudentId)
+        .map(app => {
+          const job = jobs.find(j => j.id === app.jobId);
+          return {
+            ...job,
+            dateApplied: app.dateApplied
+          };
+        });
+  
+      const tableBody = document.getElementById('applicationsTable');
+      appliedJobs.forEach(job => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${job.title}</td>
+          <td>${job.company}</td>
+          <td>${job.location}</td>
+          <td>${job.dateApplied}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    </script>
+  </body>
+  </html>

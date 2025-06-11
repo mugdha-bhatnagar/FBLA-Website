@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Employer Dashboard - Post a Job</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('post_job') }}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Company</label>
+                        <input type="text" class="form-control" name="company" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="location" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Job Type</label>
+                        <select class="form-select" name="job_type" required>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Temporary">Temporary</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" name="category" required>
+                            <option value="Technology">Technology</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Business">Business</option>
+                            <option value="Education">Education</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Salary</label>
+                        <input type="text" class="form-control" name="salary">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Application Deadline</label>
+                        <input type="date" class="form-control" name="deadline">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Job Description</label>
+                        <textarea class="form-control" name="description" rows="5" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Post Job</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .parallax {
+            background-image: url("{{ url_for('static', filename='parallax-bg.jpg') }}");
+            height: 400px; /* Adjust height */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+        }
+        .section {
+            padding: 50px;
+            text-align: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parallax"></div>
+
+</body>
+</html>
+{% endblock %}
