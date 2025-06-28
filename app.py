@@ -268,10 +268,22 @@ def recommendations():
     return render_template('recommendations.html', requests=requests)
 
 #Login Page
-@app.route('/logout')
-def logout():
-    """Show logout page with role selection"""
-    return render_template('logout.html')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Handle login and role selection"""
+    if request.method == 'POST':
+        role = request.form.get('role')
+        if role == 'admin':
+            return redirect(url_for('admin'))
+        elif role == 'employer':
+            return redirect(url_for('employer'))
+        elif role == 'student':
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid role selected', 'error')
+            return redirect(url_for('login'))
+    """Show login page with role selection"""
+    return render_template('login.html')
 
 #Dashboard for Admin and Employer
 #Admin can approve/decline jobs, Employer can post jobs
