@@ -133,6 +133,48 @@ def home():
     """Render the home page"""
     return render_template('home.html')
 
+#Contact Page
+@app.route('/contact')
+def contact():
+    """Render the contact page"""
+    return render_template('contact.html')
+
+#About Page
+@app.route('/about')
+def about():
+    """Render the about page"""
+    return render_template('about.html')
+
+#FAQ Page
+@app.route('/faq')
+def faq():
+    """Render the FAQ page"""
+    return render_template('faq.html')
+
+#Resources Page
+@app.route('/resources')
+def resources():
+    """Render the resources page"""
+    return render_template('resources.html')
+
+#Registration Page
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """Handle user registration"""
+    if request.method == 'POST':
+        # Get form data
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Here you would typically save the user to a database
+        # For simplicity, we just flash a success message
+        flash('Registration successful!', 'success')
+        return redirect(url_for('home'))
+    
+    return render_template('register.html')
+
+
 #Job Listings Page
 @app.route('/jobs')
 def jobs():
