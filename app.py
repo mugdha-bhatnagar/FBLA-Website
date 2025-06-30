@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from datetime import datetime
 import os
@@ -31,6 +31,30 @@ def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row  #Allows accessing columns by name
     return conn
+
+def init_db():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # ...existing table creation code...
+
+        # Users table for login
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL,
+                role TEXT NOT NULL,
+                name TEXT
+            )
+        ''')
+
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+    finally:
+        if conn:
+            conn.close()
 
 def init_db():
     """Initialize database tables"""
@@ -139,41 +163,6 @@ def contact():
     """Render the contact page"""
     return render_template('contact.html')
 
-#About Page
-@app.route('/about')
-def about():
-    """Render the about page"""
-    return render_template('about.html')
-
-#FAQ Page
-@app.route('/faq')
-def faq():
-    """Render the FAQ page"""
-    return render_template('faq.html')
-
-#Resources Page
-@app.route('/resources')
-def resources():
-    """Render the resources page"""
-    return render_template('resources.html')
-
-#Registration Page
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    """Handle user registration"""
-    if request.method == 'POST':
-        # Get form data
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        
-        # Here you would typically save the user to a database
-        # For simplicity, we just flash a success message
-        flash('Registration successful!', 'success')
-        return redirect(url_for('home'))
-    
-    return render_template('register.html')
-
 
 #Job Listings Page
 @app.route('/jobs')
@@ -263,18 +252,22 @@ def feedback():
 #Applications Page
 @app.route('/applications')
 def applications():
-    """Show all submitted applications"""
+    # Use session to get the current user's email or name
+    student_email = session.get('student_email', None)
     conn = get_db_connection()
-    try:
-        # Get all applications with job details
-        apps = conn.execute('''
-            SELECT applications.*, job_postings.title, job_postings.company
-            FROM applications
-            JOIN job_postings ON applications.job_id = job_postings.id
-        ''').fetchall()
-        return render_template('applications.html', applications=apps)
-    finally:
-        conn.close()
+    if not conn:
+        flash('Database connection failed.', 'error')
+        return redirect(url_for('home'))
+    cur = conn.execute('''
+        SELECT job_postings.title, job_postings.company, job_postings.location, applications.submission_date
+        FROM applications
+        JOIN job_postings ON applications.job_id = job_postings.id
+        WHERE applications.student_email = ?
+        ORDER BY applications.submission_date DESC
+    ''', (student_email,))
+    jobs = cur.fetchall()
+    conn.close()
+    return render_template('applications.html', jobs=jobs)
 
 #Recommendation Letters Request Page
 @app.route('/recommendations', methods=['GET', 'POST'])
@@ -312,19 +305,34 @@ def recommendations():
 #Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """Handle login and role selection"""
+    """
+    Handle login and role selection.
+
+    Supported roles for the 'role' field are:
+        - 'student'
+        - 'admin'
+        - 'employer'
+    The 'role' field in the login form must match one of these values.
+    """
     if request.method == 'POST':
-        role = request.form.get('role')
-        if role == 'admin':
-            return redirect(url_for('admin'))
-        elif role == 'employer':
-            return redirect(url_for('employer'))
-        elif role == 'student':
-            return redirect(url_for('home'))
-        else:
-            flash('Invalid role selected', 'error')
-            return redirect(url_for('login'))
-    """Show login page with role selection"""
+        user_email = request.form['email']
+        user_password = request.form['password']
+        user_role = request.form['role']
+        conn = get_db_connection()
+        try:
+            if user_role == 'student':
+                return redirect(url_for('applications'))
+            elif user_role == 'admin':
+                return redirect(url_for('admin'))
+            elif user_role == 'employer':
+                return redirect(url_for('employer'))
+            else:
+                flash('Invalid credentials or role.', 'error')
+                return redirect(url_for('login'))
+        finally:
+            if conn:
+                conn.close()
+        
     return render_template('login.html')
 
 #Dashboard for Admin and Employer
@@ -343,7 +351,7 @@ def admin():
 @app.route('/employer')
 def employer():
     """Employer view to post jobs"""
-    return render_template('employer.html')
+    return render_template('employer.html',jobs=employer)
 #========================
 #Approve/Reject Job Posting, Post Job
 #========================

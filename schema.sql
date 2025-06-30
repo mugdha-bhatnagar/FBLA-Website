@@ -51,6 +51,14 @@ CREATE TABLE letters_of_rec (
     FOREIGN KEY(student_id) REFERENCES students(id)
 );
 
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL, -- e.g., 'student', 'admin', 'employer'
+    name TEXT
+);
+
 
 -- ALTER TABLE applications ADD COLUMN status TEXT DEFAULT 'Pending';
 

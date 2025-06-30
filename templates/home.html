@@ -11,14 +11,25 @@
     {% include 'navbar.html' %}
 
     <!-- Hero Section -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Welcome to SNOHO Jobs</h1>
-                <p class="lead">This is Snohomish High School's platform for its high school students to find job postings, internships, get recommendations, and more.</p>
-            </div>
-        </div>
+    <div class="content">
+        <h1>Welcome to SNOHO Jobs</h1>
+        <p class="lead">This is Snohomish High School's platform for its high school students to find job postings, internships, get recommendations, and more.</p>
+        <img src ="{{ url_for('static', filename='snoho-logo.png') }}" alt="SNOHO Jobs Logo" class="img-fluid">
     </div>
+    <div class="content">
+    <h2>Explore Our Features</h2>
+    <p>Find job postings, internships, and more tailored for Snohomish High School students.</p>
+</div>
+<div class="section">
+    <h2>Get Started</h2>
+    <p>Sign up or log in to access job postings and recommendations.</p>
+    <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+</div>
+<div class="content">
+    <h2>Contact Us</h2>
+    <p>If you have any questions or need assistance, feel free to reach out.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-secondary">Contact Us</a>
+</div>
     <!-- Parallax Section -->
     <style>
         body, html {
@@ -46,46 +57,7 @@
         }
     </style>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    {% include 'slideshow.html' %}
 </body>
-<!-- Slideshow Section -->
 <div class="parallax"></div>
-<div class="content">
-    <h2>Explore Our Features</h2>
-    <p>Find job postings, internships, and more tailored for Snohomish High School students.</p>
-</div>
-<div class="section">
-    <h2>Get Started</h2>
-    <p>Sign up or log in to access job postings and recommendations.</p>
-    <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
-</div>
-<div class="parallax"></div>
-<div class="content">
-    <h2>Contact Us</h2>
-    <p>If you have any questions or need assistance, feel free to reach out.</p>
-    <a href="{{ url_for('contact') }}" class="btn btn-secondary">Contact Us</a>
-</div>
-<div class="parallax"></div>
-<div class="content">   
-    <h2>Join Our Community</h2>
-    <p>Become part of the Snohomish High School job-seeking community.</p>
-    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
-</div>
-<div class="parallax"></div>
-<div class="content">   
-    <h2>Frequently Asked Questions</h2>
-    <p>Have questions? Check out our FAQ section for answers.</p>
-    <a href="{{ url_for('faq') }}" class="btn btn-secondary">View FAQ</a>
-</div>
-<div class="section">
-    <h2>Resources</h2>
-    <p>Access resources to help you with your job search and career planning.</p>
-    <a href="{{ url_for('resources') }}" class="btn btn-secondary">View Resources</a>
-</div>
-<!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    {% include 'slideshow.html' %}
 </body>
 </html>

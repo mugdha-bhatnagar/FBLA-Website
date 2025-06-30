@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Employer Dashboard - Post a Job</h1>
+
+    <body>
+    <div class="content">
+        <h1>Welcome to the Employer Dashboard</h1>
+        <h4>Post your job listings here.</h4>
+        <p>Please enter the following information</p>
+    </div>
+    </div>
+    </body>
     
     <div class="card">
         <div class="card-body">
@@ -64,36 +71,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Portal</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .parallax {
+        background-image: url("{{ url_for('static', filename='parallax-bg.jpg') }}");
+        height: 400px; /* Adjust height */
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
         }
-        .parallax {
-            background-image: url("{{ url_for('static', filename='parallax-bg.jpg') }}");
-            height: 400px; /* Adjust height */
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        .content {
-            padding: 20px;
-            text-align: center;
-            background-color: white;
-        }
-        .section {
-            padding: 50px;
-            text-align: center;
-            font-size: 20px;
-        }
-    </style>
+    .content {
+        padding: 20px;
+        text-align: center;
+         background-color: white;
+    }
+    .section {
+        padding: 50px;
+        text-align: center;
+        font-size: 20px;
+    }
+</style>
 </head>
-<body>
-
-    <div class="parallax"></div>
-
-</body>
 </html>
 {% endblock %}
